@@ -1,0 +1,25 @@
+[package]
+name = "migration"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "migration"
+path = "lib.rs"
+
+[[bin]]
+name = "migration"
+path = "main.rs"
+
+[dependencies]
+# Migration framework
+sea-orm-migration = "1.1.19"
+
+# Async
+async-trait = "0.1.89"
+tokio = { version = "1.0", features = ["full"] }
+dotenvy = "0.15"
+
+[dependencies.sea-orm]
+version = "1.1"
+features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros"]

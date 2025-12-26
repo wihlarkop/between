@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: between-postgres
+    environment:
+      POSTGRES_USER: between
+      POSTGRES_PASSWORD: between_dev_password
+      POSTGRES_DB: between_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U between"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - between-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: between-api
+    environment:
+      # Database
+      DB_USERNAME: between
+      DB_PASSWORD: between_dev_password
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: between_dev
+      DB_MAX_CONNECTIONS: 20
+      DB_MIN_CONNECTIONS: 5
+      DB_CONNECT_TIMEOUT_SECONDS: 10
+      DB_IDLE_TIMEOUT_SECONDS: 600
+
+      # JWT
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      JWT_ACCESS_TOKEN_EXPIRY: 86400
+      JWT_REFRESH_TOKEN_EXPIRY: 432000
+
+      # Server
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+
+      # Logging
+      RUST_LOG: info,between=debug
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - between-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  between-network:
+    driver: bridge

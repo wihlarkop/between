@@ -1,0 +1,91 @@
+[package]
+name = "between"
+version = "0.1.0"
+edition = "2021"
+authors = ["Between Team"]
+
+[lib]
+name = "between"
+path = "src/lib.rs"
+
+[[bin]]
+name = "between"
+path = "src/main.rs"
+
+[dependencies]
+# Migration library
+migration = { path = "migration" }
+
+# Web framework
+axum = { version = "0.8.7", features = ["macros"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.8", features = ["cors", "trace"] }
+http = "1.4.0"
+
+# Async runtime
+tokio = { version = "1.48.0", features = ["full"] }
+
+# Database - SQLx for connection
+sqlx = { version = "0.8.6", features = [
+  "runtime-tokio",
+  "postgres",
+  "uuid",
+  "chrono",
+] }
+
+# Database - sea-query for query building
+sea-query = { version = "0.32.7", features = [
+  "backend-postgres",
+  "with-uuid",
+  "with-chrono",
+  "thread-safe",
+] }
+sea-query-binder = { version = "0.7.0", features = [
+  "sqlx-postgres",
+  "with-uuid",
+  "with-chrono",
+] }
+
+# Database - sea-orm for migrations
+sea-orm = { version = "1.1", features = [
+  "sqlx-postgres",
+  "runtime-tokio-native-tls",
+  "macros",
+] }
+
+# Serialization
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+
+# Auth & crypto
+jsonwebtoken = { version = "10.2.0", features = ["rust_crypto"] }
+argon2 = "0.5.3"
+
+# Time
+chrono = { version = "0.4.42", features = ["serde"] }
+chrono-tz = "0.10.4"
+
+# Validation
+validator = { version = "0.20.0", features = ["derive"] }
+
+# Error handling
+thiserror = "2.0.17"
+anyhow = "1.0.100"
+
+# Config
+envconfig = "0.11.1"
+dotenvy = "0.15.7"
+
+# Logging
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+
+# UUID
+uuid = { version = "1.19.0", features = ["serde", "v4"] }
+
+# OpenAPI
+utoipa = { version = "5.4.0", features = ["axum_extras", "chrono", "uuid"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["axum"] }
+
+# Async traits
+async-trait = "0.1.89"
