@@ -344,4 +344,7 @@ hs_err_pid*
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+.claude
+.zed
+
 # End of https://www.toptal.com/developers/gitignore/api/rust,rust-analyzer,flutter,dart,visualstudiocode,jetbrains+all,androidstudio
